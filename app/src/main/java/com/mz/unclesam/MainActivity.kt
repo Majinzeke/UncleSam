@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    UncleSamBonedMe()
+                    UncleSamBonedMeScreen()
                 }
             }
         }
@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun UncleSamBonedMe() {
+fun UncleSamBonedMeScreen() {
     var amountInput by remember { mutableStateOf("") }
     var tipInput by remember { mutableStateOf("") }
     var roundUp by remember { mutableStateOf(false) }
@@ -150,36 +150,19 @@ fun RoundTheTipRow(
  * Example would be "$10.00".
  */
 
-@Composable
-fun calculateTax() {
-    var amount by remember { mutableStateOf(0.0) }
-    var taxPercent by remember { mutableStateOf(10.0) }
-    var roundUp by remember { mutableStateOf(false) }
-
-    Column(modifier = Modifier.padding(16.dp)) {
-        Text("Price: ${NumberFormat.getCurrencyInstance().format(amount)}")
-        Slider(value = taxPercent.toFloat(), onValueChange = { taxPercent = it.toDouble() }, valueRange = 1f..50f, steps = 49)
-        Text("Tax: ${calculateTax(amount, taxPercent, roundUp)}")
-        Checkbox(
-            checked = roundUp,
-            onCheckedChange = { roundUp = it },
-            modifier = Modifier.padding(top = 8.dp)
-        )
-    }
-}
-
-@Composable
-fun calculateTax(amount: Double, taxPercent: Double = 10.0, roundUp: Boolean): String {
+fun calculateTax(amount: Double, taxPercent: Double, roundUp: Boolean): String {
     var tax = taxPercent / 100 * amount
-    if (roundUp)
+    if (roundUp) {
         tax = kotlin.math.ceil(tax)
+    }
     return NumberFormat.getCurrencyInstance().format(tax)
 }
+
 
 @Preview
 @Composable
 fun TipTimeScreenPreview() {
     UncleSamTheme() {
-        UncleSamBonedMe()
+        UncleSamBonedMeScreen()
     }
 }
